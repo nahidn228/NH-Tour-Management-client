@@ -1,14 +1,17 @@
 import { Outlet } from "react-router";
-import { Button } from "./components/ui/button";
+
+import CommonLayout from "./components/layout/CommonLayout";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 
 function App() {
   return (
-    <>
-      <h1>This is app Component</h1>
-      <Button>Click Me</Button>
+    <CommonLayout>
+      <Navbar />
+      <Outlet />
 
-      <Outlet></Outlet>
-    </>
+      <Footer />
+    </CommonLayout>
   );
 }
 
