@@ -10,20 +10,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router";
 import Password from "@/components/ui/Password";
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(2, {
+      message: "Username must be at least 2 characters.",
+    })
+    .max(50),
+});
 
 export function RegisterForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const form = useForm();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
 
-  const onSubmit = (data) => {
+  // const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  //   console.log(data);
+  // };
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
   };
 
@@ -57,7 +73,7 @@ export function RegisterForm({
             />
             <FormField
               control={form.control}
-              name="email"
+              email="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
