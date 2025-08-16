@@ -1,9 +1,17 @@
-
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 const Verify = () => {
-  return (
-    <div>Verify</div>
-  )
-}
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [email] = useState(location.state);
 
-export default Verify
+  useEffect(() => {
+    if (!email) {
+      navigate("/");
+    }
+  }, [email, navigate]);
+  return <div>Verify</div>;
+};
+
+export default Verify;
