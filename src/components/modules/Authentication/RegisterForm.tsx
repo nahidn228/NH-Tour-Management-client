@@ -114,7 +114,7 @@ export function RegisterForm({
                     <Password {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
-                    This is your public display name.
+                    This is your Password.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -130,7 +130,7 @@ export function RegisterForm({
                     <Password {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
-                    This is your public display name.
+                    This is your Confirm Password.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
