@@ -8,7 +8,7 @@ interface IProps {
 
 const CommonLayout = ({ children }: IProps) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col container mx-auto px-6">
       <Navbar />
       <div className="grow-1"> {children}</div>
       <Footer />

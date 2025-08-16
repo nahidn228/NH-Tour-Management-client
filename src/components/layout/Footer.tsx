@@ -1,4 +1,5 @@
 import Logo from "@/assets/icon/Logo";
+import { Link } from "react-router";
 
 export default function Footer() {
   return (
@@ -7,7 +8,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <div className="text-foreground">
-              <Logo />
+              <Link to={"/"} className="text-primary hover:text-primary/90">
+                <Logo />
+              </Link>
             </div>
 
             <p className="mt-4 max-w-xs text-muted-foreground/80">
