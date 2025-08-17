@@ -1,18 +1,38 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { cn } from "@/lib/utils";
-import { useSendOtpMutation, useVerifyOtpMutation } from "@/redux/features/auth/auth.api";
+import {
+  useSendOtpMutation,
+  useVerifyOtpMutation,
+} from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dot } from "lucide-react";
-import {  useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
-
-
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -20,7 +40,7 @@ const FormSchema = z.object({
   }),
 });
 const Verify = () => {
-    const location = useLocation();
+  const location = useLocation();
   // const navigate = useNavigate();
   const [email] = useState(location.state);
   const [confirmed, setConfirmed] = useState(false);
@@ -28,14 +48,14 @@ const Verify = () => {
   const [verifyOtp] = useVerifyOtpMutation();
   const [timer, setTimer] = useState(5);
 
-   const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       pin: "",
     },
   });
 
-    const handleSendOtp = async () => {
+  const handleSendOtp = async () => {
     const toastId = toast.loading("Sending OTP");
 
     try {
@@ -51,7 +71,7 @@ const Verify = () => {
     }
   };
 
- const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     const toastId = toast.loading("Verifying OTP");
     const userInfo = {
       email,
@@ -69,8 +89,6 @@ const Verify = () => {
     }
   };
 
-
-
   // ! Needed turn of fro development
 
   // useEffect(() => {
@@ -79,8 +97,16 @@ const Verify = () => {
   //   }
   // }, [email, navigate]);
 
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      if (email && confirmed) {
+        setTimer((prev) => prev - 1);
+      }
+    }, 1000);
+  }, [confirmed, email]);
+
   return (
-   <div className="grid place-content-center h-screen">
+    <div className="grid place-content-center h-screen">
       {confirmed ? (
         <Card>
           <CardHeader>
@@ -136,7 +162,7 @@ const Verify = () => {
                             "text-gray-500": timer !== 0,
                           })}
                         >
-                          Resent OPT:{" "}
+                          Resent OTP:{" "}
                         </Button>{" "}
                         {timer}
                       </FormDescription>
@@ -170,7 +196,6 @@ const Verify = () => {
       )}
     </div>
   );
-
 };
 
 export default Verify;
