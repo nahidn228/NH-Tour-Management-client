@@ -98,12 +98,15 @@ const Verify = () => {
   // }, [email, navigate]);
 
   useEffect(() => {
+    if (!email || !confirmed) {
+      return;
+    }
     const timerId = setInterval(() => {
-      if (email && confirmed) {
-        setTimer((prev) => prev - 1);
-      }
+      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
-  }, [confirmed, email]);
+
+    return () => clearInterval(timerId);
+  }, [email, confirmed]);
 
   return (
     <div className="grid place-content-center h-screen">
