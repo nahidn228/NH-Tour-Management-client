@@ -2,15 +2,15 @@ import App from "@/App";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 import About from "@/pages/About";
-
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
-import Bookings from "@/pages/user/Bookings";
 import Verify from "@/pages/Verify";
 import { generateRoutes } from "@/utils/generateRoutes";
 
 import { createBrowserRouter } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
+
+import { userSidebarItems } from "./userSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -45,12 +45,13 @@ export const router = createBrowserRouter([
   {
     Component: DashboardLayout,
     path: "/user",
-    children: [
-      {
-        Component: Bookings,
-        path: "bookings",
-      },
-    ],
+    // children: [
+    //   {
+    //     path: "/user/bookings",
+    //     Component: Bookings,
+    //   },
+    // ],
+    children: [...generateRoutes(userSidebarItems)],
   },
   {
     Component: Login,
