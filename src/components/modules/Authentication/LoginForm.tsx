@@ -8,8 +8,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import config from "@/config";
 import { cn } from "@/lib/utils";
-import { useLoginMutation } from "@/redux/features/auth/auth.api";
+import {
+  useLoginMutation,
+ 
+} from "@/redux/features/auth/auth.api";
 
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
@@ -20,6 +24,7 @@ export function LoginForm({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [login] = useLoginMutation();
+
   const navigate = useNavigate();
   const form = useForm();
 
@@ -104,7 +109,16 @@ export function LoginForm({
           </span>
         </div>
 
+        {/*//* http://localhost:5000/api/v1/auth/google */}
         <Button
+          // onClick={() => window.open(`${config.baseUrl}/auth/google`)}
+          onClick={() =>
+            window.open(
+              `${config.baseUrl}/auth/google`,
+              "popup",
+              "width=500,height=600,left=200,top=100"
+            )
+          }
           type="button"
           variant="outline"
           className="w-full cursor-pointer"
