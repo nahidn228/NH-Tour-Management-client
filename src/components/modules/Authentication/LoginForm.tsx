@@ -10,10 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import config from "@/config";
 import { cn } from "@/lib/utils";
-import {
-  useLoginMutation,
- 
-} from "@/redux/features/auth/auth.api";
+import { useLoginMutation } from "@/redux/features/auth/auth.api";
 
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
@@ -33,6 +30,12 @@ export function LoginForm({
     try {
       const res = await login(data).unwrap();
       console.log(res);
+
+      if (res.success) {
+        toast.success("Login Successfully");
+        navigate("/");
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
