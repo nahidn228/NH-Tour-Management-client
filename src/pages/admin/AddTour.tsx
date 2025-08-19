@@ -1,9 +1,12 @@
 
 
 const AddTour = () => {
+ 
   return (
-    <div>AddTour</div>
-  )
-}
+    <div>
+      <h1>This is AddTour component</h1>
+    </div>
+  );
+};
 
-export default AddTour
+export default AddTour;

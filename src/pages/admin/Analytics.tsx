@@ -1,7 +1,9 @@
-export default function Analytics() {
+const Analytics = () => {
   return (
     <div>
-      <h1> This is Analytics component </h1>
+      <h1>This is Analytics component</h1>
     </div>
   );
-}
+};
+
+export default Analytics;
