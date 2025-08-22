@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import SingleImageUploader from "@/components/SingleImageUploader";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAddTourTypeMutation } from "@/redux/features/tour/tour.api";
+import { useAddDivisionMutation } from "@/redux/features/division/division.api";
+
 import { useState } from "react";
 
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -31,9 +33,8 @@ type DivisionForm = {
 };
 
 export function AddDivisionModal() {
+  const [open, setOpen] = useState(false);
   const [image, setImage] = useState<File | null>(null);
-
-  console.log("Inside Division", image);
 
   const form = useForm<DivisionForm>({
     defaultValues: {
@@ -41,20 +42,29 @@ export function AddDivisionModal() {
       description: "",
     },
   });
-  // const [addTourType] = useAddTourTypeMutation();
+  const [addDivision] = useAddDivisionMutation();
   const onSubmit: SubmitHandler<DivisionForm> = async (data) => {
-    console.log(data);
-    // const res = await addTourType({ name: data.name }).unwrap();
+    const toastId = toast.loading("Adding Division...");
 
-    // if (res.success) {
-    //   toast.success("Tour Type Created");
-    //   form.reset();
-    // }
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    formData.append("file", image as File);
 
-    // console.log(res);
+    try {
+      const res = await addDivision(formData).unwrap();
+
+      if (res.success) {
+        toast.success("Division Created", { id: toastId });
+        form.reset();
+        setOpen(false);
+      }
+    } catch (error: any) {
+      toast.error(error.message, { id: toastId });
+      console.error(error);
+    }
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Add Division</Button>
       </DialogTrigger>
@@ -101,7 +111,7 @@ export function AddDivisionModal() {
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button form="add-division" type="submit">
+          <Button disabled={!image} form="add-division" type="submit">
             Save changes
           </Button>
         </DialogFooter>
