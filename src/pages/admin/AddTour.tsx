@@ -509,6 +509,8 @@ export default function AddTour() {
                 </div>
               </div>
               <div className="border-t border-muted w-full "></div>
+              {/* Included field */}
+
               <div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Included</p>
@@ -551,6 +553,7 @@ export default function AddTour() {
                 </div>
               </div>
 
+              {/* Excluded field */}
               <div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Excluded</p>
@@ -592,7 +595,7 @@ export default function AddTour() {
                   ))}
                 </div>
               </div>
-
+              {/* Amenities field */}
               <div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Amenities</p>
@@ -634,7 +637,7 @@ export default function AddTour() {
                   ))}
                 </div>
               </div>
-
+              {/* Tour Plan field */}
               <div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Tour Plan</p>
