@@ -1,3 +1,4 @@
+import SingleImageUploader from "@/components/SingleImageUploader";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAddTourTypeMutation } from "@/redux/features/tour/tour.api";
+import { useState } from "react";
 
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
@@ -29,6 +31,10 @@ type DivisionForm = {
 };
 
 export function AddDivisionModal() {
+  const [image, setImage] = useState<File | null>(null);
+
+  console.log("Inside Division", image);
+
   const form = useForm<DivisionForm>({
     defaultValues: {
       name: "",
@@ -88,6 +94,7 @@ export function AddDivisionModal() {
                 </FormItem>
               )}
             />
+            <SingleImageUploader onChange={setImage} />
           </form>
         </Form>
         <DialogFooter>
