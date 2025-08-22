@@ -3,10 +3,10 @@ import { baseApi } from "@/redux/baseApi";
 export const tourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addTour: builder.mutation({
-      query: (tourData) => ({
+      query: (addTourData) => ({
         url: "/tour/create",
         method: "POST",
-        data: tourData,
+        data: addTourData,
       }),
       invalidatesTags: ["TOUR"],
     }),
@@ -43,5 +43,5 @@ export const {
   useAddTourTypeMutation,
   useGetTourTypeQuery,
   useRemoveTourTypeMutation,
-  useAddTourMutation
+  useAddTourMutation,
 } = tourApi;
