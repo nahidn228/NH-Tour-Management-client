@@ -1,5 +1,7 @@
+import { DeleteConfirmation } from "@/components/deleteConfirmation";
 import { AddTourTypeModal } from "@/components/modules/admin/tour/AddTourModal";
 import { Button } from "@/components/ui/button";
+
 import {
   Table,
   TableBody,
@@ -9,16 +11,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetTourTypeQuery } from "@/redux/features/tour/tour.api";
+import {
+  useGetTourTypeQuery,
+  useRemoveTourTypeMutation,
+} from "@/redux/features/tour/tour.api";
 import type { ITourType } from "@/types";
 import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 const AddTourType = () => {
   const { data } = useGetTourTypeQuery(undefined);
-  console.log(data);
+  const [removeTourType] = useRemoveTourTypeMutation();
+
+  const handleRemoveTourType = async (tourId: string) => {
+    const toastId = toast.loading("Removing...");
+
+    try {
+      const res = await removeTourType(tourId).unwrap();
+
+      if (res.success) {
+        toast.success("Tour Type Deleted successfully", { id: toastId });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
-       <div className="flex justify-between my-8">
+      <div className="flex justify-between my-8">
         <h1 className="text-xl font-semibold">Tour Types</h1>
         <AddTourTypeModal />
       </div>
@@ -36,9 +57,16 @@ const AddTourType = () => {
               <TableRow className="px-2">
                 <TableCell className="font-medium">{item.name}</TableCell>
                 <TableCell className="font-medium text-right">
-                  <Button size={"sm"}>
+                  <DeleteConfirmation
+                    onConfirm={() => handleRemoveTourType(item._id)}
+                  >
+                    <Button size={"sm"}>
+                      <Trash2 />
+                    </Button>
+                  </DeleteConfirmation>
+                  {/* <Button size={"sm"}>
                     <Trash2 />
-                  </Button>
+                  </Button> */}
                 </TableCell>
               </TableRow>
             ))}
