@@ -1,3 +1,4 @@
+import MultipleImageUploader from "@/components/MultipleImageUploader";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -31,10 +32,14 @@ import {
 } from "@/components/ui/select";
 
 import { Textarea } from "@/components/ui/textarea";
+import type { FileMetadata } from "@/hooks/use-file-upload";
 
 import { cn } from "@/lib/utils";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
-import { useGetTourTypeQuery } from "@/redux/features/tour/tour.api";
+import {
+  useAddTourMutation,
+  useGetTourTypeQuery,
+} from "@/redux/features/tour/tour.api";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, formatISO } from "date-fns";
@@ -45,24 +50,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  location: z.string().min(1, "Location is required"),
-  costFrom: z.string().min(1, "Cost is required"),
-  startDate: z.date({ message: "Start date is required" }),
-  endDate: z.date({ message: "End date is required" }),
-  departureLocation: z.string().min(1, "Departure location is required"),
-  arrivalLocation: z.string().min(1, "Arrival location is required"),
-  included: z.array(z.object({ value: z.string() })),
-  excluded: z.array(z.object({ value: z.string() })),
-  amenities: z.array(z.object({ value: z.string() })),
-  tourPlan: z.array(z.object({ value: z.string() })),
-  maxGuest: z.string().min(1, "Max guest is required"),
-  minAge: z.string().min(1, "Minimum age is required"),
-  division: z.string().min(1, "Division is required"),
-  tourType: z.string().min(1, "Tour type is required"),
-});
+
 
 export default function AddTour() {
   const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
@@ -70,7 +58,7 @@ export default function AddTour() {
   const { data: divisionData, isLoading: divisionLoading } =
     useGetDivisionsQuery(undefined);
   const { data: tourTypeData } = useGetTourTypeQuery(undefined);
-  // const [addTour] = useAddTourMutation();
+  const [addTour] = useAddTourMutation();
 
   const divisionOptions = divisionData?.map(
     (item: { _id: string; name: string }) => ({
@@ -500,7 +488,7 @@ export default function AddTour() {
                   )}
                 />
                 <div className="flex-1 mt-5">
-                  {/* <MultipleImageUploader onChange={setImages} /> */}
+                  <MultipleImageUploader onChange={setImages} />
                 </div>
               </div>
               <div className="border-t border-muted w-full "></div>
