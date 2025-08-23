@@ -21,7 +21,6 @@ import { toast } from "sonner";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -31,6 +30,10 @@ import { useState } from "react";
 
 const AddTourType = () => {
   const [currentPage, setCurrentPage] = useState(1);
+
+  // const [limit, setLimit] = useState(10);
+  // const { data } = useGetTourTypeQuery({ page: currentPage, limit });
+
   const { data } = useGetTourTypeQuery({ page: currentPage });
   const [removeTourType] = useRemoveTourTypeMutation();
 
@@ -47,6 +50,8 @@ const AddTourType = () => {
       console.error(error);
     }
   };
+
+  const totalPage = data?.meta?.totalPage || 1;
 
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
@@ -89,17 +94,32 @@ const AddTourType = () => {
             <PaginationItem>
               <PaginationPrevious
                 onClick={() => setCurrentPage((prev) => prev - 1)}
+                className={
+                  currentPage === 1
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
               />
             </PaginationItem>
-            <PaginationItem>
-              <PaginationLink> {currentPage} </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+
+            {Array.from({ length: totalPage }, (_, index) => index + 1).map(
+              (page) => (
+                <PaginationItem key={page} onClick={() => setCurrentPage(page)}>
+                  <PaginationLink isActive={currentPage === page}>
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            )}
+
             <PaginationItem>
               <PaginationNext
                 onClick={() => setCurrentPage((prev) => prev + 1)}
+                className={
+                  currentPage === totalPage
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
               />
             </PaginationItem>
           </PaginationContent>
