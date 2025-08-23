@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 
 export type { ISendOtp, IVerifyOtp, ILogin } from "./auth.type";
+export type { ITourPackage } from "./tour.type";
 
 export interface IResponse<T> {
   statusCode: number;
@@ -20,11 +21,10 @@ export interface ISidebarItem {
 
 export type TRole = "SUPER_ADMIN" | "ADMIN" | "USER";
 
-
 export interface ITourType {
-  _id: string
-  name: string
-  createdAt: string
-  updatedAt: string
-  __v: number
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }

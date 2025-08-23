@@ -1,7 +1,6 @@
 import { ExternalLink } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Logo from "@/assets/icon/Logo";
 import { Link } from "react-router";
 
@@ -43,7 +42,6 @@ const HeroSection = () => {
                 <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
               </Button>
             </div>
-            
           </div>
         </div>
       </div>

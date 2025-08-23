@@ -10,13 +10,13 @@ export default function Tours() {
   // const tourType = searchParams.get("tourType") || undefined;
 
   const { data } = useGetAllToursQuery(undefined);
-  console.log(data);
+  console.log("inside tour page", data);
 
   return (
     <div className="container mx-auto px-5 py-8 grid grid-cols-12 gap-5">
       {/* <TourFilters /> */}
       <div className="col-span-9 w-full">
-        {data?.data?.map((item) => (
+        {data?.map((item) => (
           <div
             key={item.slug}
             className="border border-muted rounded-lg shadow-md overflow-hidden mb-6 flex"
