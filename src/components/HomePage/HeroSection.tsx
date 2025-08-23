@@ -2,9 +2,39 @@ import { ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Logo from "@/assets/icon/Logo";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 
 const HeroSection = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { data: divisionData, isLoading: divisionIsLoading } =
+    useGetDivisionsQuery(undefined);
+
+  const selectedDivision = searchParams.get("division") || undefined;
+  const divisionOption = divisionData?.map(
+    (item: { _id: string; name: string }) => ({
+      label: item.name,
+      value: item._id,
+    })
+  );
+
+  const handleDivisionChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("division", value);
+    setSearchParams(params);
+  };
+
   return (
     <section className="relative overflow-hidden py-32">
       <div className="absolute inset-x-0 top-0 flex h-full w-full items-center justify-center opacity-100">
@@ -32,7 +62,8 @@ const HeroSection = () => {
                 for every traveler.”
               </p>
             </div>
-            <div className="mt-6 flex justify-center gap-3">
+
+            {/* <div className="mt-6 flex justify-center gap-3">
               <Button className="shadow-sm transition-shadow hover:shadow">
                 <Link to={"/tours"}> Get Started</Link>
               </Button>
@@ -41,6 +72,38 @@ const HeroSection = () => {
 
                 <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
               </Button>
+            </div> */}
+
+            <div className="mt-6 flex  gap-2 items-center">
+              <Select
+                onValueChange={(value) => handleDivisionChange(value)}
+                value={selectedDivision ? selectedDivision : ""}
+                disabled={divisionIsLoading}
+              >
+                <SelectTrigger className="w-[100px] md:w-[200px] lg:w-[300px] xl:w-[350px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Divisions</SelectLabel>
+                    {divisionOption?.map(
+                      (item: { value: string; label: string }) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              {selectedDivision ? (
+                <Button asChild>
+                  <Link to={`/tours?division=${selectedDivision}`}>Search</Link>
+                </Button>
+              ) : (
+                <Button disabled>Search</Button>
+              )}
             </div>
           </div>
         </div>
