@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -30,15 +31,18 @@ export function AddTourTypeModal() {
   const form = useForm<TourTypeForm>();
   const [addTourType] = useAddTourTypeMutation();
   const onSubmit: SubmitHandler<TourTypeForm> = async (data) => {
-    console.log(data);
-    const res = await addTourType({ name: data.name }).unwrap();
+    const toastId = toast.loading("Adding Tour Type");
+    try {
+      const res = await addTourType({ name: data.name }).unwrap();
 
-    if (res.success) {
-      toast.success("Tour Type Created");
-      form.reset();
+      if (res.success) {
+        toast.success("Tour Type Created", { id: toastId });
+        form.reset();
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.data?.message, { id: toastId });
     }
-
-    console.log(res);
   };
   return (
     <Dialog>

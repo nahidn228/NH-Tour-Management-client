@@ -1,4 +1,3 @@
-
 import { DeleteConfirmation } from "@/components/DeleteConfirmation";
 import { AddTourTypeModal } from "@/components/modules/admin/tourType/AddTourModal";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -20,8 +18,20 @@ import type { ITourType } from "@/types";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { useState } from "react";
+
 const AddTourType = () => {
-  const { data } = useGetTourTypeQuery(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data } = useGetTourTypeQuery({ page: currentPage });
   const [removeTourType] = useRemoveTourTypeMutation();
 
   const handleRemoveTourType = async (tourId: string) => {
@@ -46,7 +56,6 @@ const AddTourType = () => {
       </div>
       <div className="border border-muted rounded-2xl">
         <Table>
-          <TableCaption>A list of recent Tour Types.</TableCaption>
           <TableHeader>
             <TableRow className="w-full px-4">
               <TableHead className="w-full">Name</TableHead>
@@ -73,6 +82,28 @@ const AddTourType = () => {
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="py-6">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink> {currentPage} </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
