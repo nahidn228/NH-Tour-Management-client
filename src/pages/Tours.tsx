@@ -1,20 +1,21 @@
+import TourFilters from "@/components/modules/Tours/TourFilter";
 import { Button } from "@/components/ui/button";
 import { useGetAllToursQuery } from "@/redux/features/tour/tour.api";
 
 import { Link, useSearchParams } from "react-router";
 
 export default function Tours() {
-  // const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  // const division = searchParams.get("division") || undefined;
-  // const tourType = searchParams.get("tourType") || undefined;
+  const division = searchParams.get("division") || undefined;
+  const tourType = searchParams.get("tourType") || undefined;
 
-  const { data } = useGetAllToursQuery(undefined);
+  const { data } = useGetAllToursQuery({ division, tourType });
   console.log("inside tour page", data);
 
   return (
     <div className="container mx-auto px-5 py-8 grid grid-cols-12 gap-5">
-      {/* <TourFilters /> */}
+      <TourFilters />
       <div className="col-span-9 w-full">
         {data?.map((item) => (
           <div
