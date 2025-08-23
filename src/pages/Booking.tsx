@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useCreateBookingMutation } from "@/redux/features/booking/booking.api";
 
-import { useGetAllToursQuery } from "@/redux/features/tour/tour.api";
+import {
+  useGetAllToursQuery,
+  useGetTourTypeQuery,
+} from "@/redux/features/tour/tour.api";
+import { format } from "date-fns";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -10,13 +14,25 @@ export default function Booking() {
   const [guestCount, setGuestCount] = useState(1);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  console.log(totalAmount);
-
   const { id } = useParams();
   const { data, isLoading, isError } = useGetAllToursQuery({ _id: id });
   const [createBooking] = useCreateBookingMutation();
 
   const tourData = data?.[0];
+  console.log(tourData?.tourType);
+
+  const { data: tourTypeData } = useGetTourTypeQuery(
+    {
+      _id: tourData?.tourType,
+      fields: "name",
+    },
+    {
+      //resolve Race condition
+      skip: !tourData,
+    }
+  );
+
+  console.log(tourTypeData?.data[0]?.name);
 
   useEffect(() => {
     if (!isLoading && !isError) {
@@ -91,11 +107,23 @@ export default function Booking() {
                   <strong>Location:</strong> {tourData?.location}
                 </div>
                 <div>
-                  <strong>Duration:</strong> {tourData?.startDate} to{" "}
-                  {tourData?.endDate}
+                  <strong>Duration:</strong>{" "}
+                  {format(
+                    new Date(
+                      tourData?.startDate ? tourData?.startDate : new Date()
+                    ),
+                    "PP"
+                  )}
+                  to{" "}
+                  {format(
+                    new Date(
+                      tourData?.endDate ? tourData?.endDate : new Date()
+                    ),
+                    "PP"
+                  )}
                 </div>
                 <div>
-                  <strong>Tour Type:</strong> {tourData?.tourType}
+                  <strong>Tour Type:</strong> {tourTypeData?.data[0]?.name}
                 </div>
                 <div>
                   <strong>Max Guests:</strong> {tourData?.maxGuest}

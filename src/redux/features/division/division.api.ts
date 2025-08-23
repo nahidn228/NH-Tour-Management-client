@@ -12,14 +12,14 @@ export const divisionApi = baseApi.injectEndpoints({
     }),
 
     getDivisions: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/division",
         method: "GET",
+        params,
       }),
       providesTags: ["DIVISION"],
-       //only get the data
+      //only get the data
       transformResponse: (response) => response.data,
-   
     }),
   }),
 });

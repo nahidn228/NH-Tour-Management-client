@@ -21,7 +21,7 @@ export default function TourFilters() {
   const selectedTourType = searchParams.get("tourType") || undefined;
 
   const { data: divisionData, isLoading: divisionIsLoading } =
-    useGetDivisionsQuery(undefined);
+    useGetDivisionsQuery({ limit: 50, fields: "_id, name" });
 
   const { data: tourTypeData, isLoading: tourTypeIsLoading } =
     useGetTourTypeQuery({ limit: 1000, fields: "_id,name" });
